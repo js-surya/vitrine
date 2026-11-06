@@ -356,7 +356,7 @@ static void settle(UIView *stack, UIView *row, BOOL moved, CGRect frame) {
 BOOL SGRPlayerPlaceVolume(UIView *stack, UIView *controls, UIView *row, CGFloat margin) {
     SGRVolumeRow *volume = objc_getAssociatedObject(stack, &kVolumeKey);
     if (!SGRPlayerVolumeOn() || !controls) {
-        if (volume) volume.alpha = 0;
+        SGRPlayerLyricsFadeView(volume, NO);
         return NO;
     }
     if (!volume) {
@@ -380,7 +380,7 @@ BOOL SGRPlayerPlaceVolume(UIView *stack, UIView *controls, UIView *row, CGFloat 
             logged = YES;
             SGLog(@"redesign player: no play button in %@, so no volume row", NSStringFromClass(controls.class));
         }
-        volume.alpha = 0;
+        SGRPlayerLyricsFadeView(volume, NO);
         return NO;
     }
     CGFloat above = CGRectGetMaxY([play convertRect:play.bounds toView:stack]);
@@ -393,8 +393,8 @@ BOOL SGRPlayerPlaceVolume(UIView *stack, UIView *controls, UIView *row, CGFloat 
     // The lyrics fade the stack's views by their alpha and bring back only the ones they faded.
     // The track is 7pt of the row's 32: it fits with the glyphs' and buttons' own clearance around it.
     BOOL fits = room >= height * 0.6;
-    if (!fits) volume.alpha = 0;
-    else if (volume.alpha < 0.01 && controls.alpha > 0.99) volume.alpha = 1;
+    BOOL faded = SGRPlayerLyricsFadeView(volume, fits);
+    if (!faded && volume.alpha < 0.01 && controls.alpha > 0.99) volume.alpha = 1;
     return fits;
 }
 
