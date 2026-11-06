@@ -375,3 +375,10 @@ NSArray<SGKaraokeLine *> *SGKaraokeLinesFromBody(NSData *body) {
     if (!body.length) return nil;
     return ((const uint8_t *)body.bytes)[0] == '{' ? fromJSON(body) : fromProtobuf(body);
 }
+
+BOOL SGKaraokeHasTranslations(NSArray<SGKaraokeLine *> *lines) {
+    for (SGKaraokeLine *line in lines) {
+        if (line.translation.length) return YES;
+    }
+    return NO;
+}

@@ -93,6 +93,8 @@ typedef NS_ENUM(NSUInteger, SGKaraokeAlign) {
 @property (nonatomic) BOOL translationMade;
 @end
 
+// Whether any of the lines carries a translation.
+BOOL SGKaraokeHasTranslations(NSArray<SGKaraokeLine *> *lines);
 // The line as one string, a space between the words that are not joined.
 NSString *SGKaraokeLineText(SGKaraokeLine *line);
 // When the singing of a line is over: its own end, or its backing's when that runs on past it.

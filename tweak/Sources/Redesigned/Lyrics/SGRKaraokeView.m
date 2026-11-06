@@ -1827,13 +1827,6 @@ typedef struct {
     _dots = nil;
 }
 
-static BOOL hasTranslations(NSArray<SGKaraokeLine *> *lines) {
-    for (SGKaraokeLine *line in lines) {
-        if (line.translation.length) return YES;
-    }
-    return NO;
-}
-
 // A line with words to translate: not an empty one, nor a ♪ holding a break.
 static BOOL hasWords(SGKaraokeLine *line) {
     for (SGKaraokeWord *word in line.words) {
@@ -2470,7 +2463,7 @@ static BOOL anyUntranslated(NSArray<SGKaraokeLine *> *lines) {
     NSArray<SGKaraokeLine *> *kept = _lines && track ? [self linesFor:track] : nil;
     if (kept && kept != _lines && kept != _passedOver) {
         if (!_hasTranslation && kept.count == _lines.count && SGKaraokeLinesTiming(kept) == SGKaraokeLinesTiming(_lines)
-            && hasTranslations(kept)) {
+            && SGKaraokeHasTranslations(kept)) {
             // Musixmatch's translations come in a moment after the lines, as copies of them: the song is
             // restyled with them where it stands.
             SGLog(@"karaoke: translations of %@ came in", track);
